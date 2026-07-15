@@ -3,8 +3,8 @@ import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import * as opentype from 'opentype.js';
 import { interpolate, combine } from 'flubber';
-
 import Image from 'next/image';
+import HeroContent from './HeroContent';
 
 const SLIDES = [
   { label: 'VerdictX', color: '#111111', src: '/project/Screenshot 2026-07-15 211205.png' },
@@ -291,7 +291,10 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         .to(".text-original", {opacity: 0, ease: "power2.inOut", duration: 0.15}, startTime)
         .to(".text-replacement", {opacity: 1, ease: "power2.inOut", duration: 0.15}, startTime)
         
-        .to("#introLines", {opacity: 1, ease: "power2.out", duration: 0.1}, startTime + 0.05)
+        // Invert background to dark
+        .to(sectionRef.current, { backgroundColor: "var(--color-ink)", ease: "power2.inOut", duration: 0.15 }, startTime)
+        
+        .to("#heroContentWrapper", {opacity: 1, pointerEvents: "auto", ease: "power2.out", duration: 0.1}, startTime + 0.05)
         .to(document.querySelector('.navbar'), {opacity: 1, pointerEvents: "auto", ease: "power2.out", duration: 0.1}, startTime + 0.05);
 
     }, sectionRef);
@@ -319,7 +322,7 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
               ))}
             </svg>
           </div>
-          <div className="text-replacement absolute top-0 left-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-ink)] font-anton">svxm</div>
+          <div className="text-replacement absolute top-0 left-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-paper)] font-anton">svxm</div>
         </div>
 
         <div id="mediaGap" className="relative w-0 h-[400px] overflow-visible shrink-0 flex items-center justify-center">
@@ -361,13 +364,12 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
               ))}
             </svg>
           </div>
-          <div className="text-replacement absolute top-0 right-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-ink)] font-anton">dev</div>
+          <div className="text-replacement absolute top-0 right-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-paper)] font-anton">dev</div>
         </div>
       </div>
 
-      <div id="introLines" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 text-center w-[90%] max-w-[900px] z-10 pointer-events-none">
-        <h1 className="font-display font-medium text-[clamp(28px,4vw,56px)] mb-4 tracking-tight">Hi, I am Shivam!</h1>
-        <h2 className="font-mono font-normal text-[clamp(20px,3vw,42px)] leading-[1.3] tracking-tight text-[var(--color-ink)]/80">Full-stack creative partner.<br/>Design and code, held to the same standard.</h2>
+      <div id="heroContentWrapper" className="absolute top-0 left-0 w-[100vw] h-[100vh] opacity-0 z-10 pointer-events-none">
+        <HeroContent />
       </div>
 
       <div id="scrollInd" className="absolute bottom-[40px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 font-display text-[11px] font-bold uppercase tracking-[2px] opacity-100 z-10 transition-opacity duration-300">
