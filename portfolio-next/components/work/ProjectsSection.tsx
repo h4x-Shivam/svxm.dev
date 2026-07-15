@@ -6,9 +6,17 @@ const PROJECTS = [
     id: '01',
     title: 'SwingsterV2',
     category: 'SaaS Platform',
-    year: '2026',
+    year: '2025',
     image: '/project/Screenshot 2026-07-15 204735.png',
     description: 'SwingsterV2, an AI-powered stock pattern intelligence platform that transforms market noise into actionable opportunities. It scans thousands of stocks, detects institutional-grade chart patterns, filters them through a multi-stage quantitative engine, and delivers only the highest-conviction trade setups via a modern SaaS dashboard.'
+  },
+  {
+    id: '02',
+    title: 'VerdictX',
+    category: 'AI Research Engine',
+    year: '2026',
+    image: '/project/Screenshot 2026-07-15 211205.png',
+    description: 'VerdictX is an intelligent investment research engine built for the Indian stock market. By combining live financial data and real-time news with a unique Multi-Agent AI architecture, VerdictX forces "Bull" and "Bear" AI agents to debate a stock\'s potential. A neutral "Judge" agent then delivers a final, data-driven verdict, providing users with institutional-grade insights in seconds.'
   },
 ];
 
