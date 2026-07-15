@@ -4,11 +4,13 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 import * as opentype from 'opentype.js';
 import { interpolate, combine } from 'flubber';
 
+import Image from 'next/image';
+
 const SLIDES = [
-  { label: 'VerdictX', color: '#111111' },
-  { label: 'SwingsterV2', color: '#3a3a3a' },
-  { label: 'Content Brand', color: '#5a5a5a' },
-  { label: 'Case Study', color: '#7a2020' },
+  { label: 'VerdictX', color: '#111111', src: '/project/Screenshot 2026-07-15 211205.png' },
+  { label: 'SwingsterV2', color: '#3a3a3a', src: '/project/Screenshot 2026-07-15 204735.png' },
+  { label: 'Content Brand', color: '#5a5a5a', src: null },
+  { label: 'Case Study', color: '#7a2020', src: null },
 ];
 
 export default function HeroSection({ onMorphComplete }: { onMorphComplete: () => void }) {
@@ -237,7 +239,7 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
       });
 
       // Step 2: Open Gap & Show First Slide
-      const gapSize = () => window.innerHeight * 0.55;
+      const gapSize = () => 500; // Fixed width for the 500px cards
       tl.to("#scrollInd", { opacity: 0, duration: 0.05 }, 0);
       tl.to("#mediaGap", { width: gapSize, ease: "power2.inOut", duration: 0.2 }, 0);
       tl.to(".slide-0", { y: '0%', opacity: 1, ease: "power2.out", duration: 0.2 }, 0);
@@ -249,15 +251,15 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         // Bring in the new slide from the bottom
         tl.to(`.slide-${i}`, { y: '0%', opacity: 1, ease: "power2.out", duration: slideDuration }, startTime);
         
-        // Push back all previous slides
+        // Push back all previous slides (Sticky Stack Effect)
         for (let j = 0; j < i; j++) {
           const depth = i - j; 
-          const scale = 1 - (depth * 0.05);
-          const yOffset = -depth * 25;
-          const rot = depth * 12;
+          // Match snippet's scale math roughly: 1 - depth * 0.05
+          const scale = Math.max(0.5, 1 - depth * 0.05);
+          // Translate up to compensate for scale and create a stack visual
+          const yOffset = -depth * 30; 
           
-          tl.to(`.slide-${j}`, { scale: scale, y: yOffset, rotation: rot, ease: "power2.out", duration: slideDuration }, startTime);
-          tl.to(`.slide-${j} .inner-content`, { rotation: -rot, ease: "power2.out", duration: slideDuration }, startTime);
+          tl.to(`.slide-${j}`, { scale: scale, y: yOffset, rotation: 0, ease: "power2.out", duration: slideDuration }, startTime);
         }
         
         startTime += slideDuration;
@@ -320,19 +322,22 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
           <div className="text-replacement absolute top-0 left-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-ink)] font-anton">svxm</div>
         </div>
 
-        <div id="mediaGap" className="relative w-0 h-[55vh] overflow-visible shrink-0 flex items-center justify-center">
+        <div id="mediaGap" className="relative w-0 h-[400px] overflow-visible shrink-0 flex items-center justify-center">
           {SLIDES.map((s, i) => (
             <div
               key={i}
-              className={`slide-item slide-${i} absolute w-full h-full rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.3)] will-change-transform`}
+              className={`slide-item slide-${i} absolute w-full max-w-[500px] h-[300px] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] will-change-transform transform-gpu origin-top`}
               style={{ 
                 zIndex: i,
-                transform: 'translateY(100%)',
+                transform: 'translateY(150%)', // Start below the gap
                 opacity: 0
               }}
             >
-              <div className="inner-content w-full h-full flex items-center justify-center scale-125 origin-center will-change-transform" style={{ background: s.color }}>
-                <div className="font-display tracking-tight text-3xl text-[var(--color-paper)]">{s.label}</div>
+              <div className="inner-content w-full h-full relative flex flex-col items-center justify-center" style={{ background: s.color }}>
+                {s.src && (
+                  <Image src={s.src} alt={s.label} fill className="object-cover" />
+                )}
+                <div className={`font-display tracking-tight text-3xl font-bold text-white z-10 ${s.src ? 'drop-shadow-lg' : 'mix-blend-difference'}`}>{s.label}</div>
               </div>
             </div>
           ))}
