@@ -2,7 +2,7 @@
 import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import * as opentype from 'opentype.js';
-import { interpolate } from 'flubber';
+import { interpolate, combine } from 'flubber';
 
 const SLIDES = [
   { label: 'VerdictX', color: '#111111' },
@@ -17,32 +17,71 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
 
   useEffect(() => {
     let active = true;
-    fetch('/fonts/Anton-Regular.ttf')
+    fetch('/fonts/AtomicAge-Regular.ttf')
       .then(res => res.arrayBuffer())
       .then(buffer => {
         if (!active) return;
         try {
           const font = opentype.parse(buffer);
           
-          const fontSize = 100;
-          function getWordPaths(word: string) {
-            const paths = [];
+          // Calculate dynamic structural primitives for each letter based on its bounding box
+          const createStructuralBlocks = (x: number, y: number, w: number, h: number) => {
+            // We create 4 generic geometric blocks that roughly fill the bounding box.
+            // These act as the "scaffolding" that the letter is built from.
+            const b1 = `M ${x},${y} L ${x+w},${y} L ${x+w},${y+h*0.2} L ${x},${y+h*0.2} Z`; // Top bar
+            const b2 = `M ${x},${y+h*0.4} L ${x+w*0.8},${y+h*0.4} L ${x+w*0.8},${y+h*0.6} L ${x},${y+h*0.6} Z`; // Middle bar
+            const b3 = `M ${x+w*0.2},${y+h*0.8} L ${x+w},${y+h*0.8} L ${x+w},${y+h} L ${x+w*0.2},${y+h} Z`; // Bottom bar
+            const b4 = `M ${x+w*0.4},${y+h*0.2} L ${x+w*0.6},${y+h*0.2} L ${x+w*0.6},${y+h*0.8} L ${x+w*0.4},${y+h*0.8} Z`; // Vertical spine
+            return [b1, b2, b3, b4];
+          };
+          
+          const createAbstractDots = (x: number, y: number, w: number, h: number) => {
+             // Scattered tiny geometric primitives that start far apart
+             const d1 = `M ${x-50},${y-50} L ${x-40},${y-50} L ${x-40},${y-40} L ${x-50},${y-40} Z`;
+             const d2 = `M ${x+w+50},${y-20} L ${x+w+60},${y-20} L ${x+w+60},${y-10} L ${x+w+50},${y-10} Z`;
+             const d3 = `M ${x-20},${y+h+50} L ${x-10},${y+h+50} L ${x-10},${y+h+60} L ${x-20},${y+h+60} Z`;
+             const d4 = `M ${x+w+30},${y+h+30} L ${x+w+40},${y+h+30} L ${x+w+40},${y+h+40} L ${x+w+30},${y+h+40} Z`;
+             return [d1, d2, d3, d4];
+          };
+
+          const processWord = (word: string) => {
+            const fontSize = 100;
+            const letters = [];
             let currentX = 0;
             for (let i = 0; i < word.length; i++) {
               const char = word[i];
               const glyph = font.charToGlyph(char);
               const path = glyph.getPath(currentX, 0, fontSize);
-              paths.push(path.toPathData(2));
-              currentX += (glyph.advanceWidth * fontSize) / font.unitsPerEm;
+              
+              const bounds = glyph.getBoundingBox();
+              const w = ((bounds.x2 - bounds.x1) * fontSize) / font.unitsPerEm;
+              const h = ((bounds.y2 - bounds.y1) * fontSize) / font.unitsPerEm;
+              const yOffset = -((bounds.y2) * fontSize) / font.unitsPerEm; // Invert y because SVG y goes down
+              
+              // Fallback width if space
+              const actualW = w || fontSize * 0.3;
+              const actualH = h || fontSize * 0.7;
+              
+              letters.push({
+                char,
+                finalPath: path.toPathData(2),
+                structuralBlocks: createStructuralBlocks(currentX, yOffset, actualW, actualH),
+                abstractDots: createAbstractDots(currentX, yOffset, actualW, actualH)
+              });
+              
+              const advance = glyph.advanceWidth || 0;
+              currentX += (advance * fontSize) / font.unitsPerEm;
             }
-            return paths;
-          }
+            return { letters, width: currentX };
+          };
+
+          const leftData = processWord("SHI");
+          const rightData = processWord("VAM");
 
           // @ts-ignore
-          window.__TARGET_PATHS = [
-            ...getWordPaths("SHI"),
-            ...getWordPaths("VAM")
-          ];
+          window.__TARGET_DATA = [...leftData.letters, ...rightData.letters];
+          // @ts-ignore
+          window.__TARGET_WIDTHS = [leftData.width, rightData.width];
           
           setIsFontLoaded(true);
         } catch (err) {
@@ -62,46 +101,141 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
     if (!isFontLoaded) return;
 
     // @ts-ignore
-    const allTargetPaths = window.__TARGET_PATHS as string[];
+    const allTargetData = window.__TARGET_DATA as any[];
+    // @ts-ignore
+    const targetWidths = window.__TARGET_WIDTHS as number[];
+
+    const leftSvg = document.getElementById('svg-left');
+    const rightSvg = document.getElementById('svg-right');
+    
+    if (leftSvg && targetWidths) {
+      leftSvg.setAttribute('viewBox', `0 -100 ${targetWidths[0]} 120`);
+    }
+    if (rightSvg && targetWidths) {
+      rightSvg.setAttribute('viewBox', `0 -100 ${targetWidths[1]} 120`);
+    }
 
     const ctx = gsap.context(() => {
       // 1. Entrance Morph Animation
       const morphTl = gsap.timeline({
         onComplete: () => {
+          // Hide pieces and show combined paths
+          document.querySelectorAll('.char-pieces').forEach(el => (el as HTMLElement).style.display = 'none');
+          document.querySelectorAll('.char-combined').forEach(el => (el as HTMLElement).style.display = 'block');
           onMorphComplete();
         }
       });
 
-      for (let i = 1; i <= 6; i++) {
-        const stick = document.querySelector('.char-' + i) as SVGPathElement;
-        if (!stick) continue;
-        const startPath = stick.getAttribute('d')!;
-        const endPath = allTargetPaths[i - 1];
+      // We animate each letter staggered
+      for (let i = 0; i < 6; i++) {
+        const letterData = allTargetData[i];
+        if (!letterData) continue;
         
-        const interpolator = interpolate(startPath, endPath, { maxSegmentLength: 2 });
+        const piecesGroup = document.querySelector(`.char-pieces-${i}`);
+        const combinedPath = document.querySelector(`.char-combined-${i}`) as SVGPathElement;
+        if (!piecesGroup || !combinedPath) continue;
+
+        const letterTl = gsap.timeline();
+
+        // Stage 1: Abstract scattered dots stretch & slide into structural scaffolding blocks
+        for (let p = 0; p < 4; p++) {
+           const piecePath = document.querySelector(`.char-${i}-piece-${p}`) as SVGPathElement;
+           if (!piecePath) continue;
+           
+           // Initialize with abstract dots
+           piecePath.setAttribute('d', letterData.abstractDots[p]);
+           
+           try {
+             // Animate dot -> structural block
+             const assembleInterpolator = interpolate(letterData.abstractDots[p], letterData.structuralBlocks[p], { maxSegmentLength: 2 });
+             const assembleDummy = { progress: 0 };
+             
+             // Random stagger offset for a more organic, puzzle-like appearance
+             const randomDelay = p * 0.1 + Math.random() * 0.3;
+             
+             letterTl.to(piecePath, {
+               opacity: 1,
+               duration: 0.8,
+               ease: "power2.out"
+             }, randomDelay);
+             
+             letterTl.to(assembleDummy, {
+               progress: 1,
+               duration: 1.2,
+               ease: "expo.out",
+               onUpdate: function() {
+                 piecePath.setAttribute('d', assembleInterpolator(this.targets()[0].progress));
+               }
+             }, randomDelay); 
+           } catch(e) {
+             piecePath.setAttribute('d', letterData.structuralBlocks[p]);
+           }
+        }
         
-        const dummy = { progress: 0 };
-        morphTl.to(dummy, {
-          progress: 1,
-          duration: 2.2, // Increased from 1.4 for a slower, grander entrance
-          ease: "elastic.out(1, 0.5)", // Slightly softer elastic bounce
-          onUpdate: function() {
-            stick.setAttribute('d', interpolator(this.targets()[0].progress));
-          }
-        }, (i - 1) * 0.15); // Increased stagger from 0.1 to 0.15
+        // Stage 2: Scaffolding blocks morph perfectly into the final opentype path
+        try {
+          const finalInterpolator = combine(letterData.structuralBlocks, letterData.finalPath, { maxSegmentLength: 2, single: true }) as any;
+          const finalDummy = { progress: 0 };
+          
+          letterTl.to(finalDummy, {
+            progress: 1,
+            duration: 1.5,
+            ease: "power2.inOut",
+            onStart: () => {
+              // Swap visibility exactly when final morph begins
+              (piecesGroup as HTMLElement).style.display = 'none';
+              combinedPath.style.display = 'block';
+              // Init combinedPath with the exact same visual structural blocks so swap is invisible
+              combinedPath.setAttribute('d', letterData.structuralBlocks.join(' '));
+            },
+            onUpdate: function() {
+              combinedPath.setAttribute('d', finalInterpolator(this.targets()[0].progress));
+            }
+          }, "-=0.2"); // Overlap the morph with the end of the assemble
+        } catch (e) {
+          console.error("Combine failed for", i, e);
+          combinedPath.setAttribute('d', letterData.finalPath);
+        }
+        
+        // Stagger each whole letter
+        morphTl.add(letterTl, i * 0.25);
       }
 
       // 2. The pinned scroll animation (ScrollTrigger)
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=6000', // Increased from 4000 to require more scrolling (slowing down the timeline)
-          scrub: 1.5, // Increased from 1 to 1.5 for a silkier smooth catch-up
-          pin: true,
-          invalidateOnRefresh: true 
+      const tl = gsap.timeline({ paused: true });
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: '+=6000', // Scroll length
+        pin: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          // Manually scrub the timeline to decouple it from ScrollTrigger's revert lifecycle
+          gsap.to(tl, { progress: self.progress, duration: 1.5, ease: "power2.out", overwrite: "auto" });
         },
+        onRefresh: () => {
+          tl.invalidate();
+        },
+        onLeave: (self) => {
+          // Force timeline to finish instantly and kill any pending scrub tweens
+          gsap.killTweensOf(tl);
+          tl.progress(1);
+          
+          // Natively kill the trigger and completely remove the pin spacer + transforms!
+          self.kill(true); 
+
+          // Snap to top instantly so they start at the "new route" flawlessly
+          // @ts-ignore
+          if (window.lenis) {
+            // @ts-ignore
+            window.lenis.scrollTo(0, { immediate: true });
+          } else {
+            window.scrollTo(0, 0); 
+          }
+        }
       });
+
       // Step 2: Open Gap & Show First Slide
       const gapSize = () => window.innerHeight * 0.55;
       tl.to("#scrollInd", { opacity: 0, duration: 0.05 }, 0);
@@ -118,9 +252,9 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         // Push back all previous slides
         for (let j = 0; j < i; j++) {
           const depth = i - j; 
-          const scale = 1 - (depth * 0.05); // 0.95, 0.90, etc.
-          const yOffset = -depth * 25; // Move up by 25px per level
-          const rot = depth * 12; // Rotate container by 12deg per level
+          const scale = 1 - (depth * 0.05);
+          const yOffset = -depth * 25;
+          const rot = depth * 12;
           
           tl.to(`.slide-${j}`, { scale: scale, y: yOffset, rotation: rot, ease: "power2.out", duration: slideDuration }, startTime);
           tl.to(`.slide-${j} .inner-content`, { rotation: -rot, ease: "power2.out", duration: slideDuration }, startTime);
@@ -138,7 +272,7 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
       const getFinalGapWidth = () => {
         const leftW = document.getElementById('heroTextLeft')?.offsetWidth || 0;
         const rightW = document.getElementById('heroTextRight')?.offsetWidth || 0;
-        const padding = window.innerWidth * 0.08; // 4vw on each side = 8vw total
+        const padding = window.innerWidth * 0.08; 
         return window.innerWidth - leftW - rightW - padding;
       };
 
@@ -155,14 +289,14 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         .to(".text-original", {opacity: 0, ease: "power2.inOut", duration: 0.15}, startTime)
         .to(".text-replacement", {opacity: 1, ease: "power2.inOut", duration: 0.15}, startTime)
         
-        .to("#introLines", {opacity: 1, y: 0, ease: "power2.out", duration: 0.1}, startTime + 0.05)
+        .to("#introLines", {opacity: 1, ease: "power2.out", duration: 0.1}, startTime + 0.05)
         .to(document.querySelector('.navbar'), {opacity: 1, pointerEvents: "auto", ease: "power2.out", duration: 0.1}, startTime + 0.05);
 
-      ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [isFontLoaded, onMorphComplete]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFontLoaded]);
 
   return (
     <section id="heroPin" ref={sectionRef} className="relative h-screen flex items-center justify-center overflow-hidden z-10">
@@ -170,9 +304,17 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         <div id="heroTextLeft" className="flex font-display uppercase tracking-tighter leading-none origin-left relative" style={{ fontSize: 'clamp(100px, 24vw, 500px)'}}>
           <div className="text-original flex items-center">
             <svg id="svg-left" viewBox="0 -100 130 120" className="h-[1em] w-auto overflow-visible block fill-current">
-              <path className="char-1" d="M 0,-100 L 25,-100 L 25,0 L 0,0 Z" />
-              <path className="char-2" d="M 50,-100 L 75,-100 L 75,0 L 50,0 Z" />
-              <path className="char-3" d="M 100,-100 L 125,-100 L 125,0 L 100,0 Z" />
+              {[0, 1, 2].map(i => (
+                <g key={i}>
+                  <g className={`char-pieces char-pieces-${i}`}>
+                    <path className={`char-${i}-piece-0`} style={{ opacity: 0 }} />
+                    <path className={`char-${i}-piece-1`} style={{ opacity: 0 }} />
+                    <path className={`char-${i}-piece-2`} style={{ opacity: 0 }} />
+                    <path className={`char-${i}-piece-3`} style={{ opacity: 0 }} />
+                  </g>
+                  <path className={`char-combined char-combined-${i}`} style={{ display: 'none' }} />
+                </g>
+              ))}
             </svg>
           </div>
           <div className="text-replacement absolute top-0 left-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-ink)] font-anton">svxm</div>
@@ -201,16 +343,24 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         <div id="heroTextRight" className="flex font-display uppercase tracking-tighter leading-none origin-right relative" style={{ fontSize: 'clamp(100px, 24vw, 500px)'}}>
           <div className="text-original flex items-center">
             <svg id="svg-right" viewBox="0 -100 170 120" className="h-[1em] w-auto overflow-visible block fill-current">
-              <path className="char-4" d="M 0,-100 L 25,-100 L 25,0 L 0,0 Z" />
-              <path className="char-5" d="M 70,-100 L 95,-100 L 95,0 L 70,0 Z" />
-              <path className="char-6" d="M 140,-100 L 165,-100 L 165,0 L 140,0 Z" />
+              {[3, 4, 5].map(i => (
+                <g key={i}>
+                  <g className={`char-pieces char-pieces-${i}`}>
+                    <path className={`char-${i}-piece-0`} style={{ opacity: 0 }} />
+                    <path className={`char-${i}-piece-1`} style={{ opacity: 0 }} />
+                    <path className={`char-${i}-piece-2`} style={{ opacity: 0 }} />
+                    <path className={`char-${i}-piece-3`} style={{ opacity: 0 }} />
+                  </g>
+                  <path className={`char-combined char-combined-${i}`} style={{ display: 'none' }} />
+                </g>
+              ))}
             </svg>
           </div>
           <div className="text-replacement absolute top-0 right-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-ink)] font-anton">dev</div>
         </div>
       </div>
 
-      <div id="introLines" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] opacity-0 text-center w-[90%] max-w-[900px] z-10 pointer-events-none">
+      <div id="introLines" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 text-center w-[90%] max-w-[900px] z-10 pointer-events-none">
         <h1 className="font-display font-medium text-[clamp(28px,4vw,56px)] mb-4 tracking-tight">Hi, I am Shivam!</h1>
         <h2 className="font-mono font-normal text-[clamp(20px,3vw,42px)] leading-[1.3] tracking-tight text-[var(--color-ink)]/80">Full-stack creative partner.<br/>Design and code, held to the same standard.</h2>
       </div>

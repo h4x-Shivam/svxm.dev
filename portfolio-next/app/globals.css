@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-paper: #FAFAF7;
+  --color-paper: #FFFFFF;
   --color-ink: #111111;
   --color-accent: #E4002B;
   --font-display: var(--font-space-grotesk), sans-serif;

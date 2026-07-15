@@ -137,7 +137,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -50%);
     text-align: center;
     opacity: 0;
     width: 90%;
@@ -414,7 +414,7 @@ function initScrollSequence() {
     .to(".text-original", {opacity: 0, ease: "power2.inOut", duration: 0.15}, startTime)
     .to(".text-replacement", {opacity: 1, ease: "power2.inOut", duration: 0.15}, startTime)
     
-    .to("#introLines", {opacity: 1, y: "0", ease: "power2.out", duration: 0.1}, startTime + 0.05)
+    .to("#introLines", {opacity: 1, ease: "power2.out", duration: 0.1}, startTime + 0.05)
     .to("#navbar", {opacity: 1, pointerEvents: "auto", ease: "power2.out", duration: 0.1}, startTime + 0.05);
 }
 </script>

@@ -9,6 +9,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
     lenisRef.current = lenis;
+    
+    // @ts-ignore
+    window.lenis = lenis;
 
     // sync Lenis with ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
