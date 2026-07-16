@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import Magnetic from '@/components/ui/Magnetic';
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -9,11 +10,10 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Hide if scrolling down past 50px, show if scrolling up
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        setIsVisible(false);
-      } else if (currentScrollY < lastScrollY) {
-        setIsVisible(true);
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false); // Hide on scroll down
+      } else {
+        setIsVisible(true);  // Show on scroll up
       }
       
       setLastScrollY(currentScrollY);
@@ -30,9 +30,15 @@ export default function Navbar() {
       }`}
     >
       <div className="flex gap-8 bg-white px-10 py-3.5 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.12)] font-display font-semibold text-[15px] uppercase tracking-normal">
-        <a href="#" className="text-[var(--color-ink)] hover:opacity-50 transition-opacity">Work</a>
-        <a href="#" className="text-[var(--color-ink)] hover:opacity-50 transition-opacity">Play</a>
-        <a href="#" className="text-[var(--color-ink)] hover:opacity-50 transition-opacity">About</a>
+        <Magnetic strength={15}>
+          <a href="#" className="text-[var(--color-ink)] hover:opacity-50 transition-opacity block">Work</a>
+        </Magnetic>
+        <Magnetic strength={15}>
+          <a href="#" className="text-[var(--color-ink)] hover:opacity-50 transition-opacity block">Play</a>
+        </Magnetic>
+        <Magnetic strength={15}>
+          <a href="#" className="text-[var(--color-ink)] hover:opacity-50 transition-opacity block">About</a>
+        </Magnetic>
       </div>
     </nav>
   );

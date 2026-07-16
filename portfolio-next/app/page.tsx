@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import HeroSection from '@/components/hero/HeroSection';
-import Navbar from '@/components/hero/Navbar';
 import ProjectsSection from '@/components/work/ProjectsSection';
 import AboutSection from '@/components/about/AboutSection';
 import TechStackSection from '@/components/tech/TechStackSection';
@@ -36,9 +35,6 @@ export default function Home() {
 
   return (
     <main>
-
-
-      <Navbar />
       <HeroSection onMorphComplete={() => setLoaded(true)} />
       <ProjectsSection />
       <TechStackSection />

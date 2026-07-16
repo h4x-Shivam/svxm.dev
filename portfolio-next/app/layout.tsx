@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, IBM_Plex_Mono, Anton, Geist } from 'next/font/google';
 import SmoothScroll from '@/lib/smooth-scroll';
+import GrainOverlay from '@/components/ui/GrainOverlay';
 import './globals.css';
 import { cn } from "@/lib/utils";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className={`${spaceGrotesk.variable} ${plexMono.variable} ${anton.variable} antialiased locked`}>
+        <GrainOverlay />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

@@ -23,14 +23,14 @@ export default function Footer() {
           {/* Massive Typographic Links */}
           <div className="flex flex-col w-full uppercase font-anton text-[15vw] md:text-[13vw] leading-[0.85] tracking-tight">
             <a 
-              href="mailto:hello@svxm.dev" 
+              href="mailto:svxm.h4x@gmail.com" 
               className="hover:opacity-70 transition-opacity duration-300 w-fit"
             >
               EMAIL
             </a>
             <div className="flex flex-col md:flex-row md:gap-x-12 lg:gap-x-16 mt-2 md:mt-0">
               <a 
-                href="https://instagram.com" 
+                href="https://instagram.com/sh1vxxm" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:opacity-70 transition-opacity duration-300 w-fit"
@@ -38,7 +38,7 @@ export default function Footer() {
                 INSTAGRAM
               </a>
               <a 
-                href="https://linkedin.com" 
+                href="https://www.linkedin.com/in/sh1vxxm" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:opacity-70 transition-opacity duration-300 w-fit"
