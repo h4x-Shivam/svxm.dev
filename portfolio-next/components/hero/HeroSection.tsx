@@ -211,10 +211,11 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         start: 'top top',
         end: '+=6000', // Scroll length
         pin: true,
+        refreshPriority: 10, // HIGHEST priority - must calculate spacer before elements below it
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           // Manually scrub the timeline to decouple it from ScrollTrigger's revert lifecycle
-          gsap.to(tl, { progress: self.progress, duration: 1.5, ease: "power2.out", overwrite: "auto" });
+          gsap.to(tl, { progress: self.progress, duration: 1.5, ease: "power3.out", overwrite: "auto" });
         },
         onRefresh: () => {
           tl.invalidate();
@@ -235,6 +236,13 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
           } else {
             window.scrollTo(0, 0); 
           }
+
+          // CRITICAL: Refresh all triggers now that the 6000px spacer is gone!
+          // This ensures ProjectsSection and TechStackSection recalculate their heights
+          // correctly based on the normal DOM flow.
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 50);
         }
       });
 

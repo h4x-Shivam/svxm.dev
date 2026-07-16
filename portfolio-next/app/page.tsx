@@ -1,9 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import HeroSection from '@/components/hero/HeroSection';
 import Navbar from '@/components/hero/Navbar';
 import ProjectsSection from '@/components/work/ProjectsSection';
 import AboutSection from '@/components/about/AboutSection';
+import TechStackSection from '@/components/tech/TechStackSection';
+import Footer from '@/components/footer/Footer';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -21,6 +24,11 @@ export default function Home() {
   useEffect(() => {
     if (loaded) {
       document.body.classList.remove('locked');
+      // Critical: Refresh all GSAP ScrollTriggers after the loading screen morphs and unlocks the body
+      // This recalculates all section heights and prevents pinning overlaps
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
     } else {
       document.body.classList.add('locked');
     }
@@ -33,7 +41,9 @@ export default function Home() {
       <Navbar />
       <HeroSection onMorphComplete={() => setLoaded(true)} />
       <ProjectsSection />
+      <TechStackSection />
       <AboutSection />
+      <Footer />
     </main>
   );
 }

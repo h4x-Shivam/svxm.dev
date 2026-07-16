@@ -7,7 +7,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
+    // A slightly lower lerp gives more "weight" to the scroll (Apple-like)
+    const lenis = new Lenis({ 
+      lerp: 0.075, 
+      wheelMultiplier: 0.9,
+      smoothWheel: true
+    });
     lenisRef.current = lenis;
     
     // @ts-ignore

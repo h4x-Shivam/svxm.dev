@@ -35,7 +35,8 @@ export default function ProjectsSection() {
           trigger: sectionRef.current,
           start: "top 65%", // Stage 1: Breathing space before triggering
           end: "top 10%", // Defines the scroll distance over which the animation plays
-          scrub: 1, // 1 second smoothing to link animation directly to scroll progress
+          scrub: 1.5, // Silkier smoothing to link animation directly to scroll progress
+          refreshPriority: 5, // Medium priority, calculates after Hero but before TechStack
         }
       });
 
