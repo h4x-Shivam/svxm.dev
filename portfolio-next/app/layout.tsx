@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, IBM_Plex_Mono, Anton } from 'next/font/google';
+import { Space_Grotesk, IBM_Plex_Mono, Anton, Geist } from 'next/font/google';
 import SmoothScroll from '@/lib/smooth-scroll';
 import './globals.css';
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -32,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className={`${spaceGrotesk.variable} ${plexMono.variable} ${anton.variable} antialiased locked`}>
         <SmoothScroll>{children}</SmoothScroll>
       </body>

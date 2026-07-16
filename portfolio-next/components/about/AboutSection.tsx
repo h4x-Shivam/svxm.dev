@@ -11,9 +11,9 @@ const SKILLS = [
 
 export default function AboutSection() {
   return (
-    <section className="relative w-full min-h-screen bg-white text-[var(--color-ink)] py-32 px-[4vw] z-10">
+    <section className="relative w-full min-h-screen bg-[var(--color-ink)] text-[var(--color-paper)] py-32 px-[4vw] z-10">
       <div className="max-w-[1400px] mx-auto">
-        <div className="mb-24 flex items-end justify-between border-b border-[var(--color-ink)]/10 pb-10">
+        <div className="mb-24 flex items-end justify-between border-b border-[var(--color-paper)]/10 pb-10">
           <h2 className="font-display font-bold text-[clamp(60px,10vw,180px)] leading-none uppercase tracking-tighter">
             About
           </h2>
@@ -39,7 +39,7 @@ export default function AboutSection() {
               
               <div className="w-full">
                 <h4 className="font-mono text-sm uppercase tracking-widest opacity-40 mb-6">Core Capabilities</h4>
-                <ul className="flex flex-col gap-4 border-t border-[var(--color-ink)]/10 pt-6">
+                <ul className="flex flex-col gap-4 border-t border-[var(--color-paper)]/10 pt-6">
                   {SKILLS.map((skill, idx) => (
                     <li key={idx} className="font-display text-xl md:text-2xl tracking-tight flex items-center justify-between group cursor-default">
                       <span>{skill}</span>
@@ -52,10 +52,10 @@ export default function AboutSection() {
 
             <div className="mt-24 w-fit">
               <a href="mailto:hello@example.com" className="flex items-center gap-4 group cursor-pointer">
-                <span className="font-display font-bold uppercase tracking-widest text-sm relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[var(--color-ink)] after:origin-right after:transition-transform after:duration-500 hover:after:scale-x-0 hover:after:origin-left">
+                <span className="font-display font-bold uppercase tracking-widest text-sm relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[var(--color-paper)] after:origin-right after:transition-transform after:duration-500 hover:after:scale-x-0 hover:after:origin-left">
                   Get In Touch
                 </span>
-                <div className="w-8 h-8 rounded-full border border-[var(--color-ink)] flex items-center justify-center group-hover:bg-[var(--color-ink)] group-hover:text-white transition-colors duration-500">
+                <div className="w-8 h-8 rounded-full border border-[var(--color-paper)] flex items-center justify-center group-hover:bg-[var(--color-paper)] group-hover:text-[var(--color-ink)] transition-colors duration-500">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
