@@ -3,10 +3,11 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { MotionTokens } from '@/lib/animations/MotionTokens';
 import { SRS } from '@/lib/animations/SVXMRevealSystem';
 import Lanyard from '@/components/ui/lanyard';
+import { PORTRAIT_B64 } from './idCardImage';
 
 const PARAGRAPH_TEXT = "I'm a developer who enjoys building thoughtful software at the intersection of AI, finance and engineering. I'm fascinated by systems that solve real problems, obsessed with refining user experiences, and constantly experimenting with new technologies. Every project I build teaches me something new—and that's what keeps me building.";
 
-const FRONT_CARD_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900" style="background-color:%23111111; color:white; font-family:sans-serif;"><rect width="600" height="900" fill="%23111111"/><text x="50" y="80" font-size="24" fill="gray" font-weight="bold" letter-spacing="4">SVXM</text><circle cx="300" cy="350" r="150" fill="%23222"/><text x="300" y="350" font-size="20" fill="gray" text-anchor="middle" dominant-baseline="middle">[ PORTRAIT ]</text><text x="50" y="700" font-size="48" fill="white" font-weight="bold">Shivam Jaiswal</text><text x="50" y="740" font-size="24" fill="gray">Software Engineer</text><text x="50" y="820" font-size="20" fill="gray">INDIA</text></svg>`;
+const FRONT_CARD_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900" style="background-color:%23111111; color:white; font-family:sans-serif;"><defs><linearGradient id="grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,0.7)" /><stop offset="20%" stop-color="rgba(0,0,0,0)" /><stop offset="60%" stop-color="rgba(0,0,0,0)" /><stop offset="100%" stop-color="rgba(0,0,0,0.95)" /></linearGradient></defs><image x="0" y="0" width="600" height="900" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${PORTRAIT_B64}" /><rect x="0" y="0" width="600" height="900" fill="url(%23grad)" /><text x="50" y="80" font-size="24" fill="white" font-weight="bold" letter-spacing="4">SVXM</text><text x="50" y="780" font-size="48" fill="white" font-weight="bold">Shivam Jaiswal</text><text x="50" y="820" font-size="24" fill="lightgray">Software Engineer</text><text x="50" y="860" font-size="20" fill="gray">INDIA</text></svg>`;
 const BACK_CARD_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900" style="background-color:%23111111; color:white; font-family:sans-serif;"><rect width="600" height="900" fill="%23111111"/><text x="300" y="100" font-size="30" fill="gray" text-anchor="middle" letter-spacing="4">CONNECT</text><rect x="150" y="200" width="300" height="300" fill="white"/><text x="300" y="360" font-size="24" fill="black" text-anchor="middle">[ QR CODE ]</text><text x="300" y="600" font-size="24" fill="white" text-anchor="middle">github.com/h4x-Shivam</text><text x="300" y="650" font-size="24" fill="white" text-anchor="middle">linkedin.com/in/sh1vxxm</text><text x="300" y="700" font-size="24" fill="white" text-anchor="middle">svxm.h4x@gmail.com</text><text x="300" y="820" font-size="16" fill="gray" text-anchor="middle">Portfolio Version: 1.0.0</text></svg>`;
 
 export default function AboutSection() {
@@ -129,7 +130,7 @@ export default function AboutSection() {
         >
           <p 
             ref={paragraphRef}
-            className="font-display text-[clamp(24px,2.5vw,40px)] leading-[1.3] tracking-tight text-center md:text-left [&_.srs-word]:opacity-0"
+            className="font-sans font-medium text-[clamp(24px,2.5vw,40px)] leading-[1.3] tracking-tight text-center md:text-left [&_.srs-word]:opacity-0"
           />
         </div>
 

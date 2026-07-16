@@ -330,7 +330,7 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
               ))}
             </svg>
           </div>
-          <div className="text-replacement absolute top-0 left-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-paper)] font-anton">svxm</div>
+          <div className="text-replacement absolute top-0 left-0 -translate-x-[40px] opacity-0 whitespace-nowrap lowercase text-[var(--color-paper)] font-anton">svxm</div>
         </div>
 
         <div id="mediaGap" className="relative w-0 h-[400px] overflow-visible shrink-0 flex items-center justify-center">

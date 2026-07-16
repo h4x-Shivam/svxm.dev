@@ -11,6 +11,7 @@
   --font-display: var(--font-space-grotesk), sans-serif;
   --font-mono: var(--font-plex-mono), monospace;
   --font-anton: var(--font-anton), sans-serif;
+  --font-script: var(--font-kaushan), cursive;
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);

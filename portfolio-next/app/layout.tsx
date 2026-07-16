@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, IBM_Plex_Mono, Anton, Geist } from 'next/font/google';
+import localFont from 'next/font/local';
 import SmoothScroll from '@/lib/smooth-scroll';
 import GrainOverlay from '@/components/ui/GrainOverlay';
 import './globals.css';
@@ -25,6 +26,12 @@ const anton = Anton({
   variable: '--font-anton',
 });
 
+const kaushan = localFont({
+  src: '../public/fonts/KaushanScript/KaushanScript-Regular.ttf',
+  variable: '--font-kaushan',
+  weight: '400',
+});
+
 export const metadata: Metadata = {
   title: 'Shivam — Portfolio',
   description: 'Full-stack creative partner.',
@@ -37,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
-      <body className={`${spaceGrotesk.variable} ${plexMono.variable} ${anton.variable} antialiased locked`}>
+      <body className={`${spaceGrotesk.variable} ${plexMono.variable} ${anton.variable} ${kaushan.variable} antialiased locked`}>
         <GrainOverlay />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
