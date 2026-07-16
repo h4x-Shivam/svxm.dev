@@ -126,14 +126,7 @@ export default function HeroContent() {
             Building thoughtful digital experiences where intelligent engineering meets clean design.
           </p>
           
-          <div className="flex flex-wrap items-center gap-6">
-            <button className="px-10 py-5 rounded-full bg-[var(--color-paper)] text-[var(--color-ink)] font-display uppercase tracking-widest text-sm font-bold transition-transform hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-              View My Work
-            </button>
-            <button className="px-10 py-5 rounded-full border border-[var(--color-paper)]/20 text-[var(--color-paper)] font-display uppercase tracking-widest text-sm font-bold transition-all hover:border-[var(--color-paper)] hover:bg-[var(--color-paper)]/10">
-              Let's Connect
-            </button>
-          </div>
+
         </div>
 
         {/* Right Column */}
