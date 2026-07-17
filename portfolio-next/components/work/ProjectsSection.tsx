@@ -179,6 +179,7 @@ export default function ProjectsSection() {
                 src={PROJECT.image} 
                 alt={PROJECT.title}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                 className="object-cover"
                 priority
               />
@@ -204,7 +205,7 @@ export default function ProjectsSection() {
               className="hidden md:block w-[360px] aspect-[4/3] absolute -right-[20%] top-[20%] z-20 p-2"
             >
               <div className="relative w-full h-full rounded-[12px] overflow-hidden border border-white/5">
-                <Image src={PROJECT.dashboardImg} alt="Dashboard" fill className="object-cover" />
+                <Image src={PROJECT.dashboardImg} alt="Dashboard" fill sizes="360px" className="object-cover" />
               </div>
             </FloatingCard>
 
@@ -215,7 +216,7 @@ export default function ProjectsSection() {
               className="hidden md:block w-[240px] aspect-square absolute left-[2%] -bottom-[15%] z-30 p-2"
             >
                <div className="relative w-full h-full rounded-[12px] overflow-hidden border border-white/5 bg-[#111]">
-                <Image src={PROJECT.aiImg} alt="AI Engine" fill className="object-cover opacity-50 mix-blend-luminosity" />
+                <Image src={PROJECT.aiImg} alt="AI Engine" fill sizes="240px" className="object-cover opacity-50 mix-blend-luminosity" />
               </div>
             </FloatingCard>
             
@@ -234,11 +235,11 @@ export default function ProjectsSection() {
         </div>
         
         <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[var(--color-paper)]/[0.08]">
-          <Image src={PROJECT.dashboardImg} alt="Dashboard" fill className="object-cover" />
+          <Image src={PROJECT.dashboardImg} alt="Dashboard" fill sizes="90vw" className="object-cover" />
         </div>
 
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-paper)]/[0.08]">
-          <Image src={PROJECT.aiImg} alt="AI Engine" fill className="object-cover" />
+          <Image src={PROJECT.aiImg} alt="AI Engine" fill sizes="90vw" className="object-cover" />
         </div>
       </div>
 

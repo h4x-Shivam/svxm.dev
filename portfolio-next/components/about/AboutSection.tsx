@@ -126,11 +126,11 @@ export default function AboutSection() {
         {/* Starts absolutely centered, driven entirely by GSAP */}
         <div 
           ref={paragraphWrapRef} 
-          className="absolute z-10 w-[90vw] max-w-[800px] origin-top-left transform-gpu will-change-transform"
+          className="absolute z-10 w-[90vw] max-w-[900px] origin-top-left transform-gpu will-change-transform"
         >
           <p 
             ref={paragraphRef}
-            className="font-sans font-medium text-[clamp(24px,2.5vw,40px)] leading-[1.3] tracking-tight text-center md:text-left [&_.srs-word]:opacity-0"
+            className="font-sans font-medium text-[clamp(28px,3vw,48px)] leading-[1.3] tracking-tight text-center md:text-left [&_.srs-word]:opacity-0"
           />
         </div>
 
@@ -139,10 +139,8 @@ export default function AboutSection() {
           ref={headerRef} 
           className="absolute top-[15vh] left-[4vw] z-20 flex flex-col opacity-0 translate-y-[30px]"
         >
-          <p className="font-mono text-sm uppercase tracking-widest text-[var(--color-paper)]/70 mb-2">
-            MEET SHIVAM
-          </p>
-          <h2 className="font-display font-bold text-[clamp(40px,6vw,120px)] leading-none uppercase tracking-tighter">
+
+          <h2 className="font-display font-bold text-[clamp(60px,9vw,160px)] leading-none uppercase tracking-tighter">
             Behind SVXM
           </h2>
         </div>
@@ -157,6 +155,7 @@ export default function AboutSection() {
             gravity={[0, -20, 0]} 
             frontImage={FRONT_CARD_SVG}
             backImage={BACK_CARD_SVG}
+            lanyardImage="/project/ChatGPT Image Jul 17, 2026, 12_50_53 PM.png"
           />
         </div>
 

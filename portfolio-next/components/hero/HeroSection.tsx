@@ -5,6 +5,7 @@ import * as opentype from 'opentype.js';
 import { interpolate, combine } from 'flubber';
 import Image from 'next/image';
 import HeroContent from './HeroContent';
+import ShinyText from '@/components/ui/ShinyText';
 
 const SLIDES = [
   { label: 'VerdictX', color: '#111111', src: '/project/Screenshot 2026-07-15 211205.png' },
@@ -303,7 +304,7 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
         .to(sectionRef.current, { backgroundColor: "var(--color-ink)", ease: "power2.inOut", duration: 0.15 }, startTime)
         
         .to("#heroContentWrapper", {opacity: 1, pointerEvents: "auto", ease: "power2.out", duration: 0.1}, startTime + 0.05)
-        .to(document.querySelector('.navbar'), {opacity: 1, pointerEvents: "auto", ease: "power2.out", duration: 0.1}, startTime + 0.05);
+        .to(document.querySelector('.navbar') || [], {opacity: 1, pointerEvents: "auto", ease: "power2.out", duration: 0.1}, startTime + 0.05);
 
     }, sectionRef);
 
@@ -330,7 +331,9 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
               ))}
             </svg>
           </div>
-          <div className="text-replacement absolute top-0 left-0 -translate-x-[40px] opacity-0 whitespace-nowrap lowercase text-[var(--color-paper)] font-anton">svxm</div>
+          <div className="text-replacement absolute top-0 left-0 -translate-x-[40px] opacity-0 whitespace-nowrap lowercase font-anton">
+            <ShinyText text="svxm" speed={3} delay={0.5} color="var(--color-paper)" shineColor="#ffffff" spread={100} />
+          </div>
         </div>
 
         <div id="mediaGap" className="relative w-0 h-[400px] overflow-visible shrink-0 flex items-center justify-center">
@@ -346,7 +349,7 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
             >
               <div className="inner-content w-full h-full relative flex flex-col items-center justify-center" style={{ background: s.color }}>
                 {s.src && (
-                  <Image src={s.src} alt={s.label} fill className="object-cover" />
+                  <Image src={s.src} alt={s.label} fill sizes="(max-width: 500px) 100vw, 500px" className="object-cover" />
                 )}
                 <div className={`font-display tracking-tight text-3xl font-bold text-white z-10 ${s.src ? 'drop-shadow-lg' : 'mix-blend-difference'}`}>{s.label}</div>
               </div>
@@ -372,7 +375,9 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
               ))}
             </svg>
           </div>
-          <div className="text-replacement absolute top-0 right-0 opacity-0 whitespace-nowrap lowercase text-[var(--color-paper)] font-anton">dev</div>
+          <div className="text-replacement absolute top-0 right-0 opacity-0 whitespace-nowrap lowercase font-anton">
+            <ShinyText text="dev" speed={3} delay={0.5} color="var(--color-paper)" shineColor="#ffffff" spread={100} />
+          </div>
         </div>
       </div>
 

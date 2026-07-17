@@ -10,6 +10,7 @@ export default function CometCardDemo() {
         <div className="relative w-full aspect-[4/5] overflow-hidden">
           <Image
             fill
+            sizes="(max-width: 768px) 100vw, 460px"
             priority
             className="absolute inset-0 h-full w-full bg-[#000000] object-cover contrast-[1.1] saturate-[0.3]"
             alt="Portrait"

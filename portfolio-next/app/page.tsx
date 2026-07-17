@@ -5,6 +5,7 @@ import ProjectsSection from '@/components/work/ProjectsSection';
 import AboutSection from '@/components/about/AboutSection';
 import TechStackSection from '@/components/tech/TechStackSection';
 import Footer from '@/components/footer/Footer';
+import CurvedLoop from '@/components/ui/CurvedLoop';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function Home() {
@@ -39,6 +40,14 @@ export default function Home() {
       <ProjectsSection />
       <TechStackSection />
       <AboutSection />
+      <CurvedLoop 
+        marqueeText="THINK ✦ BUILD ✦ LEARN ✦ REPEAT ✦ "
+        speed={1}
+        curveAmount={0}
+        direction="left"
+        interactive={true}
+        className="fill-[var(--color-paper)] font-display"
+      />
       <Footer />
     </main>
   );

@@ -64,6 +64,7 @@ export function PortraitCard() {
           src="/project/WhatsApp Image 2026-06-21 at 23.44.39.jpeg"
           alt="Shivam Portrait"
           fill
+          sizes="(max-width: 768px) 100vw, 450px"
           className="object-cover contrast-[1.05]"
           priority
         />

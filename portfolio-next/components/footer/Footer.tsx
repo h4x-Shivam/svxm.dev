@@ -52,7 +52,6 @@ export default function Footer() {
           <div className="mt-24 md:mt-32 flex items-end justify-between font-display text-sm md:text-lg opacity-90 border-none">
             <div className="flex gap-4 md:gap-12">
               <span>©2026 SVXM</span>
-              <span>All rights reserved</span>
             </div>
             
             <button 
