@@ -190,34 +190,27 @@ export default function ProjectsSection() {
             <FloatingCard 
               variants={cardVariants}
               style={{ x: cardTranslateX, y: cardTranslateY }}
-              className="hidden md:flex flex-col justify-center p-8 w-[300px] h-[160px] absolute -left-[5%] top-[-10%] z-20"
+              className="hidden md:block w-[280px] lg:w-[340px] absolute -left-[10%] top-[0%] z-20"
             >
-              <h4 className="font-mono text-[10px] uppercase tracking-widest opacity-40 mb-3">Project Overview</h4>
-              <p className="font-sans text-[13px] leading-relaxed opacity-80">
-                {PROJECT.title} detects institutional-grade patterns with AI.
-              </p>
+              <Image src="/project/Screenshot 2026-07-17 164227.png" alt="Quote" width={1643} height={655} className="w-full h-auto object-cover" />
             </FloatingCard>
 
             {/* Floating Card 2: Right side (Like RSQUARE book) */}
             <FloatingCard 
               variants={cardVariants}
               style={{ x: cardTranslateX, y: cardTranslateY }}
-              className="hidden md:block w-[360px] aspect-[4/3] absolute -right-[20%] top-[20%] z-20 p-2"
+              className="hidden md:block w-[380px] lg:w-[460px] absolute -right-[15%] top-[10%] z-20"
             >
-              <div className="relative w-full h-full rounded-[12px] overflow-hidden border border-white/5">
-                <Image src={PROJECT.dashboardImg} alt="Dashboard" fill sizes="360px" className="object-cover" />
-              </div>
+              <Image src="/project/Screenshot 2026-07-17 164156.png" alt="VCP Pattern" width={1384} height={759} className="w-full h-auto object-cover" />
             </FloatingCard>
 
             {/* Floating Card 3: Bottom Left (Like RSQUARE palette) */}
             <FloatingCard 
               variants={cardVariants}
               style={{ x: cardTranslateX, y: cardTranslateY }}
-              className="hidden md:block w-[240px] aspect-square absolute left-[2%] -bottom-[15%] z-30 p-2"
+              className="hidden md:block w-[300px] lg:w-[360px] absolute left-[0%] -bottom-[10%] z-30"
             >
-               <div className="relative w-full h-full rounded-[12px] overflow-hidden border border-white/5 bg-[#111]">
-                <Image src={PROJECT.aiImg} alt="AI Engine" fill sizes="240px" className="object-cover opacity-50 mix-blend-luminosity" />
-              </div>
+              <Image src="/project/Screenshot 2026-07-17 164241.png" alt="Founder" width={1337} height={668} className="w-full h-auto object-cover" />
             </FloatingCard>
             
           </motion.div>

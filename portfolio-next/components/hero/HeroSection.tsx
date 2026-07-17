@@ -10,8 +10,8 @@ import ShinyText from '@/components/ui/ShinyText';
 const SLIDES = [
   { label: 'VerdictX', color: '#111111', src: '/project/Screenshot 2026-07-15 211205.png' },
   { label: 'SwingsterV2', color: '#3a3a3a', src: '/project/Screenshot 2026-07-15 204735.png' },
-  { label: 'Content Brand', color: '#5a5a5a', src: null },
-  { label: 'Case Study', color: '#7a2020', src: null },
+  { label: 'Content Brand', color: '#5a5a5a', src: '/project/funny_ memes.jpg' },
+  { label: 'Case Study', color: '#7a2020', src: '/project/download.jpg' },
 ];
 
 export default function HeroSection({ onMorphComplete }: { onMorphComplete: () => void }) {
@@ -351,7 +351,6 @@ export default function HeroSection({ onMorphComplete }: { onMorphComplete: () =
                 {s.src && (
                   <Image src={s.src} alt={s.label} fill sizes="(max-width: 500px) 100vw, 500px" className="object-cover" />
                 )}
-                <div className={`font-display tracking-tight text-3xl font-bold text-white z-10 ${s.src ? 'drop-shadow-lg' : 'mix-blend-difference'}`}>{s.label}</div>
               </div>
             </div>
           ))}
