@@ -339,11 +339,12 @@ function Band({
       </group>
       <mesh ref={band}>
         <meshLineGeometry />
+        {/* @ts-expect-error meshLineMaterial args are optional but typed as required */}
         <meshLineMaterial
           color="white"
           depthTest={false}
           resolution={isMobile ? [1000, 2000] : [1000, 1000]}
-          useMap
+          useMap={1}
           map={texture}
           repeat={[-4, 1]}
           lineWidth={lanyardWidth}

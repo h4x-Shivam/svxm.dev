@@ -66,25 +66,25 @@ export default function TechStackSection() {
       <div className="w-full md:w-1/2 h-[70vh] md:h-full relative flex items-center justify-center">
         <div className="w-full h-[80%] max-h-[800px] relative pointer-events-none md:pointer-events-auto">
           {/* pointer-events disabled on mobile wrapper to let touch scroll work, but the component handles native touches inside */}
-          <OptionWheel
-            ref={wheelRef}
-            items={TECH_STACK}
-            defaultSelected={0}
-            textColor="rgba(255,255,255,0.15)"
-            activeColor="#ffffff"
-            side="right"
-            fontSize={6}
-            spacing={1.8}
-            curve={1.2}
-            tilt={10}
-            blur={4}
-            fade={0.35}
-            smoothing={450}
-            inset={100}
-            loop={false}
-            draggable={false}
-            disableWheelScroll={true}
-          />
+          {React.createElement(OptionWheel as any, {
+            ref: wheelRef,
+            items: TECH_STACK,
+            defaultSelected: 0,
+            textColor: "rgba(255,255,255,0.15)",
+            activeColor: "#ffffff",
+            side: "right",
+            fontSize: 6,
+            spacing: 1.8,
+            curve: 1.2,
+            tilt: 10,
+            blur: 4,
+            fade: 0.35,
+            smoothing: 450,
+            inset: 100,
+            loop: false,
+            draggable: false,
+            disableWheelScroll: true
+          })}
         </div>
       </div>
       

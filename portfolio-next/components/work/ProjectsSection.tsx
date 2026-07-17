@@ -123,7 +123,7 @@ export default function ProjectsSection() {
       opacity: 1, 
       scale: 1, 
       y: 0, 
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } 
     },
   };
 
@@ -172,7 +172,7 @@ export default function ProjectsSection() {
               className="absolute inset-0 w-full h-full rounded-[inherit] overflow-hidden border border-[var(--color-paper)]/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.2)] transition-shadow duration-[800ms] group-hover:shadow-[0_32px_80px_rgba(0,0,0,0.5)] group-hover:border-[var(--color-paper)]/[0.1]"
               variants={{
                 initial: { scale: 1 },
-                hover: { scale: 1.02, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
+                hover: { scale: 1.02, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
               }}
             >
               <Image 

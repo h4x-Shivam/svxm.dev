@@ -24,7 +24,7 @@ export default function AboutSection() {
         paragraphRef.current.innerHTML = SRS.splitToWords(PARAGRAPH_TEXT);
       }
 
-      const words = paragraphRef.current?.querySelectorAll('.srs-word');
+      const words = paragraphRef.current ? gsap.utils.toArray(paragraphRef.current.querySelectorAll('.srs-word')) : [];
       // 2. Initial Hidden States (Empty Canvas)
       gsap.set(words, { opacity: 0 }); 
       gsap.set(headerRef.current, { opacity: 0, y: 30 });
